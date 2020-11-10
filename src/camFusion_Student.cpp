@@ -5,6 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+
 #include "camFusion.hpp"
 #include "dataStructures.h"
 
@@ -146,14 +147,103 @@ void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint
 void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, 
                       std::vector<cv::DMatch> kptMatches, double frameRate, double &TTC, cv::Mat *visImg)
 {
-    // ...
+    // // compute distance ratios between all matched keypoints
+    // vector<double> distRatios; // stores the distance ratios for all keypoints between curr. and prev. frame
+    // for (auto it1 = kptMatches.begin(); it1 != kptMatches.end() - 1; ++it1)
+    // { // outer kpt. loop
+
+    //     // get current keypoint and its matched partner in the prev. frame
+    //     cv::KeyPoint kpOuterCurr = kptsCurr.at(it1->trainIdx);
+    //     cv::KeyPoint kpOuterPrev = kptsPrev.at(it1->queryIdx);
+
+    //     for (auto it2 = kptMatches.begin() + 1; it2 != kptMatches.end(); ++it2)
+    //     { // inner kpt.-loop
+
+    //         double minDist = 100.0; // min. required distance
+
+    //         // get next keypoint and its matched partner in the prev. frame
+    //         cv::KeyPoint kpInnerCurr = kptsCurr.at(it2->trainIdx);
+    //         cv::KeyPoint kpInnerPrev = kptsPrev.at(it2->queryIdx);
+
+    //         // compute distances and distance ratios
+    //         double distCurr = cv::norm(kpOuterCurr.pt - kpInnerCurr.pt);
+    //         double distPrev = cv::norm(kpOuterPrev.pt - kpInnerPrev.pt);
+
+    //         if (distPrev > std::numeric_limits<double>::epsilon() && distCurr >= minDist)
+    //         { // avoid division by zero
+
+    //             double distRatio = distCurr / distPrev;
+    //             distRatios.push_back(distRatio);
+    //         }
+    //     } // eof inner loop over all matched kpts
+    // }     // eof outer loop over all matched kpts
+
+    // // only continue if list of distance ratios is not empty
+    // if (distRatios.size() == 0)
+    // {
+    //     TTC = NAN;
+    //     return;
+    // }
+
+
+    // // STUDENT TASK (replacement for meanDistRatio)
+    // std::sort(distRatios.begin(), distRatios.end());
+    // long medIndex = floor(distRatios.size() / 2.0);
+    // double medDistRatio = distRatios.size() % 2 == 0 ? (distRatios[medIndex - 1] + distRatios[medIndex]) / 2.0 : distRatios[medIndex]; // compute median dist. ratio to remove outlier influence
+
+    // double dT = 1 / frameRate;
+    // TTC = -dT / (1 - medDistRatio);
+    // EOF STUDENT TASK
 }
 
+void kNearestPointsMeanValue(std::list<double> minXPList, int& kNearest, double& meanValue)
+{
+    for (auto it = minXPList.begin(); it != next(minXPList.begin(), kNearest); it++)
+        meanValue += *it;
+    meanValue = meanValue/kNearest;
+}
 
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
                      std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC)
 {
-    // ...
+    // auxiliary variables
+    double dT = 0.1;        // time between two measurements in seconds
+    double laneWidth = 4.0; // assumed width of the ego lane
+    double scope = (laneWidth-0.2) / 2;
+    std::list<double> minXPrevList;
+    std::list<double> minXCurrList;
+
+    auto checkFunc = [&scope](const LidarPoint &lp){return abs(lp.y) >= scope;};
+
+    lidarPointsPrev.erase(std::remove_if(lidarPointsPrev.begin(), lidarPointsPrev.end(), checkFunc), lidarPointsPrev.end());
+    lidarPointsCurr.erase(std::remove_if(lidarPointsCurr.begin(), lidarPointsCurr.end(), checkFunc), lidarPointsCurr.end());
+
+    // find closest distance to Lidar points within ego lane
+    double minXPrev = 1e9, minXCurr = 1e9;
+    for (auto it = lidarPointsPrev.begin(); it != lidarPointsPrev.end(); ++it)
+    {
+        minXPrev = minXPrev > it->x ? it->x : minXPrev;
+        minXPrevList.push_front(minXPrev);
+    }
+
+    for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
+    {
+        minXCurr = minXCurr > it->x ? it->x : minXCurr;
+        minXCurrList.push_front(minXCurr);
+    }
+
+    int kNearestPoints = 100;
+    double kMinXCurr = 0;
+    double kMinXPrev = 0;
+
+    kNearestPointsMeanValue(minXPrevList, kNearestPoints, kMinXCurr);
+    kNearestPointsMeanValue(minXCurrList, kNearestPoints, kMinXPrev);   
+
+    cout << "Mean min current:  " << kMinXCurr << endl;
+    cout << "Mean min previous: " << kMinXPrev << endl;
+
+    // compute TTC from both measurements
+    TTC = kMinXCurr * dT / (kMinXPrev - kMinXCurr);
 }
 
 
