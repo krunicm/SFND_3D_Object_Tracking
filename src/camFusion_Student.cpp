@@ -139,7 +139,40 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
 // associate a given bounding box with the keypoints it contains
 void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, std::vector<cv::DMatch> &kptMatches)
 {
-    // ...
+    std::vector<double> euclidian;
+
+    for (cv::DMatch match : kptMatches)
+    {
+        int currIdx = match.trainIdx;
+        if (boundingBox.roi.contains(kptsCurr[currIdx].pt))
+        {
+            int prevIdx = match.queryIdx;
+            euclidian.push_back(cv::norm(kptsCurr[currIdx].pt - kptsPrev[prevIdx].pt));
+        }
+            
+    }
+
+    double euclidianMean = std::accumulate(euclidian.begin(), euclidian.end(), 0)/euclidian.size();
+
+    for (cv::DMatch match : kptMatches)
+    {
+        int currIdx = match.trainIdx;
+        if (boundingBox.roi.contains(kptsCurr[currIdx].pt))
+        {
+            int prevIdx = match.queryIdx;
+            int distance = cv::norm(kptsCurr[currIdx].pt - kptsPrev[prevIdx].pt);
+
+            if (distance <= euclidianMean)
+            {
+                boundingBox.keypoints.push_back(kptsCurr[currIdx]);
+                boundingBox.kptMatches.push_back(match);
+            }
+        }
+    }
+
+    cout << "Mean value: " << euclidianMean << endl;
+    cout << "Before filtering there are: " << euclidian.size() << endl;
+    cout << "After filtering, there are: " << boundingBox.keypoints.size() << endl;
 }
 
 
