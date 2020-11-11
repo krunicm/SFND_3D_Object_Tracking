@@ -298,3 +298,128 @@ In this case current distance is bigger then the previous which imply that vehic
 
 Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
+1. Combo (Detector/Descriptor)
+
+SHITOMASI/BRISK
+
+| TTC Lidar (s) | TTC Camera (s) | Difference (s) |
+| -----------   | ----------- | ----------- |
+| 12.9722 | 15.0726 | 2.10042 | 
+| 12.264 | 13.2428 | 0.97875 | 
+| 13.9161 | 14.3921 | 0.47594 | 
+| 14.8865 | 12.8477 | 2.03879 | 
+| 7.41552 | 12.8285 | 5.41294 | 
+| 12.4213 | 11.3009 | 1.12046 | 
+| 34.3404 | 12.1551 | 22.1853 | 
+| 9.34376 | 13.6508 | 4.307 | 
+| 18.1318 | 10.8869 | 7.2449 | 
+| 297.282 | 35.585 | 261.697 | 
+| 3.18101 | 12.8 | 9.61899 | 
+| -10.8537 | 11.5836 | 22.4373 | 
+| 9.22307 | 11.1144 | 1.89128 | 
+| 10.9678 | 12.5097 | 1.54197 | 
+| 8.18954 | 10.225 | 2.03543 | 
+| 3.16065 | 11.414 | 8.25333 | 
+| -8.58076 | 10.6233 | 19.2041 | 
+| 9.04898 | 10.2699 | 1.22093 | 
+
+Median difference between Lidar and Camera TTC: 3.20371s \
+Processing time: 10.7093s
+
+KPI = 100 / ( Processing time + TTC difference ) = 7.1875 
+
+2. Combo (Detector/Descriptor)
+
+FAST/BRIEF
+
+| TTC Lidar (s) | TTC Camera (s) | Difference (s) |
+| -----------   | ----------- | ----------- |
+| 12.9722 | 10.7101 | 2.2621 | 
+| 12.264 | 11.0063 | 1.25769 | 
+| 13.9161 | 14.1559 | 0.239767 | 
+| 14.8865 | 14.3886 | 0.497926 | 
+| 7.41552 | 20.0387 | 12.6232 | 
+| 12.4213 | 13.293 | 0.871662 | 
+| 34.3404 | 12.2182 | 22.1223 | 
+| 9.34376 | 12.7596 | 3.41582 | 
+| 18.1318 | 12.6 | 5.53176 | 
+| 297.282 | 13.4681 | 283.813 | 
+| 3.18101 | 13.7533 | 10.5723 | 
+| -10.8537 | 10.974 | 21.8277 | 
+| 9.22307 | 12.3343 | 3.11124 | 
+| 10.9678 | 11.2431 | 0.27538 | 
+| 8.18954 | 11.8747 | 3.68512 | 
+| 3.16065 | 11.8398 | 8.67919 | 
+| -8.58076 | 7.92013 | 16.5009 | 
+| 9.04898 | 11.554 | 2.50501 | 
+
+Median difference between Lidar and Camera TTC: 3.55047s \
+Processing time: 7.61744s
+
+KPI = 100 / ( Processing time + TTC difference ) = 8.95422
+
+3. Combo (Detector/Descriptor)
+
+FAST/ORB
+
+| TTC Lidar (s) | TTC Camera (s) | Difference (s) |
+| -----------   | ----------- | ----------- |
+| 12.9722 | 11.0544 | 1.91775 | 
+| 12.264 | 10.6351 | 1.62892 | 
+| 13.9161 | 13.4008 | 0.515357 | 
+| 14.8865 | 12.7877 | 2.09887 | 
+| 7.41552 | 18.0923 | 10.6768 | 
+| 12.4213 | 12.9892 | 0.567842 | 
+| 34.3404 | 12.4642 | 21.8762 | 
+| 9.34376 | 11.3522 | 2.00844 | 
+| 18.1318 | 12.1119 | 6.01983 | 
+| 297.282 | 13.4637 | 283.818 | 
+| 3.18101 | 13.1 | 9.91899 | 
+| -10.8537 | 10.4239 | 21.2777 | 
+| 9.22307 | 12.0462 | 2.8231 | 
+| 10.9678 | 11.0103 | 0.0425369 | 
+| 8.18954 | 11.4079 | 3.21832 | 
+| 3.16065 | 11.6 | 8.43935 | 
+| -8.58076 | 7.57979 | 16.1605 | 
+| 9.04898 | 10.5903 | 1.54128 | 
+
+Median difference between Lidar and Camera TTC: 3.02071s \
+Processing time: 7.21001s
+
+KPI = 100 / ( Processing time + TTC difference ) = 9.77448
+
+4. Combo (Detector/Descriptor)
+
+
+SHITOMASI/BRIEF
+
+| TTC Lidar (s) | TTC Camera (s) | Difference (s) |
+| -----------   | ----------- | ----------- |
+| 12.9722 | 14.6756 | 1.70345 | 
+| 12.264 | 13.9717 | 1.70765 | 
+| 13.9161 | 9.73978 | 4.17635 | 
+| 14.8865 | 14.982 | 0.0954879 | 
+| 7.41552 | 12.7628 | 5.34728 | 
+| 12.4213 | 13.2703 | 0.848987 | 
+| 34.3404 | 15.2664 | 19.0741 | 
+| 9.34376 | 12.0847 | 2.74097 | 
+| 18.1318 | 11.8703 | 6.26145 | 
+| 297.282 | 12.6285 | 284.653 | 
+| 3.18101 | 11.8507 | 8.66966 | 
+| -10.8537 | 11.7642 | 22.618 | 
+| 9.22307 | 11.7197 | 2.49661 | 
+| 10.9678 | 11.3557 | 0.387933 | 
+| 8.18954 | 12.1983 | 4.00872 | 
+| 3.16065 | 8.23961 | 5.07896 | 
+| -8.58076 | 11.1382 | 19.7189 | 
+| 9.04898 | 8.43097 | 0.61801 | 
+
+Median difference between Lidar and Camera TTC: 4.09254s \
+Processing time: 7.11801s
+
+KPI = 100 / ( Processing time + TTC difference ) = 8.92017
+
+Conclusion: \
+Combination of Detector/Descriptor - FAST/ORB, provides the best performanse, if we calculate KPI as following: \
+KPI = 100 / ( Processing time + TTC difference ) = 9.77448
+
