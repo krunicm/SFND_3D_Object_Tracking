@@ -222,9 +222,9 @@ void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint
         }
     }
 
-    cout << "Mean value: " << euclidianMean << endl;
-    cout << "Before filtering there are: " << euclidian.size() << endl;
-    cout << "After filtering, there are: " << boundingBox.keypoints.size() << endl;
+    // cout << "Mean value: " << euclidianMean << endl;
+    // cout << "Before filtering there are: " << euclidian.size() << endl;
+    // cout << "After filtering, there are: " << boundingBox.keypoints.size() << endl;
 }
 
 
@@ -281,7 +281,7 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
     // EOF STUDENT TASK
 }
 
-void kNearestPointsMedianValue(vector<double> minXPVector, int& kNearest, double& medianValue)
+void kNearestPointsMedianValue(vector<double> minXPVector, int kNearest, double& medianValue)
 {
     typedef vector<double>::size_type vec_sz;
 
@@ -337,9 +337,9 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     // compute TTC from both measurements
     TTC = kMinXCurr * dT / (kMinXPrev - kMinXCurr);
 
-    cout << "Median min current:  " << kMinXCurr << endl;
-    cout << "Median min previous: " << kMinXPrev << endl;
-    cout << "Lidar TTC: " << TTC << "s" << endl;
+    // cout << "Median min current:  " << kMinXCurr << endl;
+    // cout << "Median min previous: " << kMinXPrev << endl;
+    // cout << "Lidar TTC: " << TTC << "s" << endl;
 }
 
 

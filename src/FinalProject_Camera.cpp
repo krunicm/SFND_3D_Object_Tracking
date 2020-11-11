@@ -74,7 +74,20 @@ int main(int argc, const char *argv[])
     vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
     bool bVis = false;            // visualize results
 
+    // SHITOMASI/BRISK
+    // FAST/BRIEF
+    // FAST/ORB
+    // SHITOMASI/BRIEF
+    string detectorType = "SHITOMASI";
+    string descriptorType = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    cout << detectorType << "/" << descriptorType << "\n" << endl;
+
     /* MAIN LOOP OVER ALL IMAGES */
+    std::vector<double> diff;
+    double t = (double)cv::getTickCount();
+
+    cout << "| TTC Lidar (s) | TTC Camera (s) | Difference (s) |" << endl;
+    cout << "| -----------   | ----------- | ----------- |" << endl;
 
     for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex+=imgStepWidth)
     {
@@ -93,7 +106,7 @@ int main(int argc, const char *argv[])
         frame.cameraImg = img;
         dataBuffer.push_back(frame);
 
-        cout << "#1 : LOAD IMAGE INTO BUFFER done: " <<  imgFullFilename << endl;
+        // cout << "#1 : LOAD IMAGE INTO BUFFER done: " <<  imgFullFilename << endl;
 
 
         /* DETECT & CLASSIFY OBJECTS */
@@ -103,7 +116,7 @@ int main(int argc, const char *argv[])
         detectObjects((dataBuffer.end() - 1)->cameraImg, (dataBuffer.end() - 1)->boundingBoxes, confThreshold, nmsThreshold,
                       yoloBasePath, yoloClassesFile, yoloModelConfiguration, yoloModelWeights, bVis);
 
-        cout << "#2 : DETECT & CLASSIFY OBJECTS done" << endl;
+        // cout << "#2 : DETECT & CLASSIFY OBJECTS done" << endl;
 
 
         /* CROP LIDAR POINTS */
@@ -119,7 +132,7 @@ int main(int argc, const char *argv[])
     
         (dataBuffer.end() - 1)->lidarPoints = lidarPoints;
 
-        cout << "#3 : CROP LIDAR POINTS done" << endl;
+        // cout << "#3 : CROP LIDAR POINTS done" << endl;
 
 
         /* CLUSTER LIDAR POINT CLOUD */
@@ -137,7 +150,7 @@ int main(int argc, const char *argv[])
         }
         bVis = false;
 
-        cout << "#4 : CLUSTER LIDAR POINT CLOUD done" << endl;
+        // cout << "#4 : CLUSTER LIDAR POINT CLOUD done" << endl;
         
         
         // REMOVE THIS LINE BEFORE PROCEEDING WITH THE FINAL PROJECT
@@ -151,7 +164,6 @@ int main(int argc, const char *argv[])
 
         // extract 2D keypoints from current image
         vector<cv::KeyPoint> keypoints; // create empty feature list for current image
-        string detectorType = "SHITOMASI";
 
         if (detectorType.compare("SHITOMASI") == 0)
         {
@@ -180,25 +192,25 @@ int main(int argc, const char *argv[])
                 keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             }
             cv::KeyPointsFilter::retainBest(keypoints, maxKeypoints);
-            cout << " NOTE: Keypoints have been limited!" << endl;
+            // cout << " NOTE: Keypoints have been limited!" << endl;
         }
 
         // push keypoints and descriptor for current frame to end of data buffer
         (dataBuffer.end() - 1)->keypoints = keypoints;
 
-        cout << "#5 : DETECT KEYPOINTS done" << endl;
+        // cout << "#5 : DETECT KEYPOINTS done" << endl;
 
 
         /* EXTRACT KEYPOINT DESCRIPTORS */
 
         cv::Mat descriptors;
-        string descriptorType = "BRISK"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+        
         descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
 
         // push descriptors for current frame to end of data buffer
         (dataBuffer.end() - 1)->descriptors = descriptors;
 
-        cout << "#6 : EXTRACT DESCRIPTORS done" << endl;
+        // cout << "#6 : EXTRACT DESCRIPTORS done" << endl;
 
 
         if (dataBuffer.size() > 1) // wait until at least two images have been processed
@@ -218,7 +230,7 @@ int main(int argc, const char *argv[])
             // store matches in current data frame
             (dataBuffer.end() - 1)->kptMatches = matches;
 
-            cout << "#7 : MATCH KEYPOINT DESCRIPTORS done" << endl;
+            // cout << "#7 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
             
             /* TRACK 3D OBJECT BOUNDING BOXES */
@@ -232,7 +244,7 @@ int main(int argc, const char *argv[])
             // store matches in current data frame
             (dataBuffer.end()-1)->bbMatches = bbBestMatches;
 
-            cout << "#8 : TRACK 3D OBJECT BOUNDING BOXES done" << endl;
+            // cout << "#8 : TRACK 3D OBJECT BOUNDING BOXES done" << endl;
 
 
             /* COMPUTE TTC ON OBJECT IN FRONT */
@@ -275,7 +287,7 @@ int main(int argc, const char *argv[])
                     computeTTCCamera((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints, currBB->kptMatches, sensorFrameRate, ttcCamera);
                     //// EOF STUDENT ASSIGNMENT
 
-                    bVis = true;
+                    bVis = false;
                     if (bVis)
                     {
                         cv::Mat visImg = (dataBuffer.end() - 1)->cameraImg.clone();
@@ -289,17 +301,28 @@ int main(int argc, const char *argv[])
                         string windowName = "Final Results : TTC";
                         cv::namedWindow(windowName, 4);
                         cv::imshow(windowName, visImg);
-                        cout << "Press key to continue to next frame" << endl;
+                        // cout << "Press key to continue to next frame" << endl;
                         cv::waitKey(0);
                     }
                     bVis = false;
+                    
+                    cout << "| " << ttcLidar << " | " << ttcCamera << " | " << abs(ttcLidar - ttcCamera) << " | " << endl;
+                    diff.push_back(abs(ttcLidar - ttcCamera));
 
                 } // eof TTC computation
-            } // eof loop over all BB matches            
-
+            } // eof loop over all BB matches  
         }
-
     } // eof loop over all images
+
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+
+    double median = 0;
+
+    kNearestPointsMedianValue(diff, diff.size(), median);
+
+    cout << "\nMedian difference between Lidar and Camera TTC: " << median << "s" << endl;
+    cout << "Processing time: " << t << "s\n" << endl;
+    cout << "KPI = 100 / ( Processing time + TTC difference ) = " << 100/(t + median) << "\n"<< endl;
 
     return 0;
 }

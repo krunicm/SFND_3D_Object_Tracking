@@ -39,7 +39,7 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
         double t = (double)cv::getTickCount();
         matcher->match(descSource, descRef, matches); // Finds the best match for each descriptor in desc1
         t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-        std::cout << "NN with n=" << matches.size() << " matches in " << 1000*t/1.0 << " ms" << std::endl;
+        // std::cout << "NN with n=" << matches.size() << " matches in " << 1000*t/1.0 << " ms" << std::endl;
     }
     else if (selectorType.compare("SEL_KNN") == 0)
     { // k nearest neighbors (k=2)
@@ -48,7 +48,7 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
         double t = (double)cv::getTickCount();
         matcher->knnMatch(descSource, descRef, knn_matches, 2); // finds the 2 best matches
         t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-        cout << " (KNN) with n=" << knn_matches.size() << " matches in " << 1000 * t / 1.0 << " ms" << endl;
+        // cout << " (KNN) with n=" << knn_matches.size() << " matches in " << 1000 * t / 1.0 << " ms" << endl;
 
         // STUDENT TASK
         // filter matches using descriptor distance ratio test
@@ -103,7 +103,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     double t = (double)cv::getTickCount();
     extractor->compute(img, keypoints, descriptors);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms" << endl;
+    // cout << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms" << endl;
 }
 
 // Detect keypoints in image using the traditional Shi-Thomasi detector
@@ -133,7 +133,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
         keypoints.push_back(newKeyPoint);
     }
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    // cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     // visualize results
     if (bVis)
@@ -209,7 +209,7 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     }     // eof loop over rows
     
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Harris Corner detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    // cout << "Harris Corner detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     // visualize keypoints
     if (bVis)
@@ -266,7 +266,7 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
     detector->detect(img, keypoints);
 
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << detectorType << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    // cout << detectorType << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
 
     if (bVis)
