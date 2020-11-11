@@ -135,6 +135,58 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
     }
 }
 
+void showLidarTopview(std::vector<LidarPoint> lidarPoints)
+{
+    cv::Size worldSize(10.0, 20.0); // width and height of sensor field in m
+    cv::Size imageSize(500, 1000); // corresponding top view image in pixel
+
+    // create topview image
+    cv::Mat topviewImg(imageSize, CV_8UC3, cv::Scalar(0, 0, 0));
+
+    // plot Lidar points into image
+    for (auto it = lidarPoints.begin(); it != lidarPoints.end(); ++it)
+    {
+        float xw = (*it).x; // world position in m with x facing forward from sensor
+        float yw = (*it).y; // world position in m with y facing left from sensor
+
+        int y = (-xw * imageSize.height / worldSize.height) + imageSize.height;
+        int x = (-yw * imageSize.width / worldSize.width) + imageSize.width / 2;
+  
+        // TODO: 
+        // 1. Change the color of the Lidar points such that 
+        // X=0.0m corresponds to red while X=20.0m is shown as green.
+        // 2. Remove all Lidar points on the road surface while preserving 
+        // measurements on the obstacles in the scene.
+        
+        float zw = (*it).z; // world position in m with y facing left from sensor
+        if(zw > -1.40){
+        // EOF STUDENT EXERCISE 2            
+
+            // STUDENT EXERCISE 1
+            float val = it->x;
+            float maxVal = worldSize.height;
+            int red = min(255, (int)(255 * abs((val - maxVal) / maxVal)));
+            int green = min(255, (int)(255 * (1 - abs((val - maxVal) / maxVal))));
+            cv::circle(topviewImg, cv::Point(x, y), 5, cv::Scalar(0, green, red), -1);
+            // EOF STUDENT EXERCISE 1
+        }
+    }
+
+    // plot distance markers
+    float lineSpacing = 2.0; // gap between distance markers
+    int nMarkers = floor(worldSize.height / lineSpacing);
+    for (size_t i = 0; i < nMarkers; ++i)
+    {
+        int y = (-(i * lineSpacing) * imageSize.height / worldSize.height) + imageSize.height;
+        cv::line(topviewImg, cv::Point(0, y), cv::Point(imageSize.width, y), cv::Scalar(255, 0, 0));
+    }
+
+    // display image
+    string windowName = "Top-View Perspective of LiDAR data";
+    cv::namedWindow(windowName, 2);
+    cv::imshow(windowName, topviewImg);
+    cv::waitKey(0); // wait for key to be pressed
+}
 
 // associate a given bounding box with the keypoints it contains
 void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, std::vector<cv::DMatch> &kptMatches)
@@ -229,11 +281,18 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
     // EOF STUDENT TASK
 }
 
-void kNearestPointsMeanValue(std::list<double> minXPList, int& kNearest, double& meanValue)
+void kNearestPointsMedianValue(vector<double> minXPVector, int& kNearest, double& medianValue)
 {
-    for (auto it = minXPList.begin(); it != next(minXPList.begin(), kNearest); it++)
-        meanValue += *it;
-    meanValue = meanValue/kNearest;
+    typedef vector<double>::size_type vec_sz;
+
+    sort(minXPVector.begin(), minXPVector.end());
+    vector<double> kNearestVector;
+    kNearestVector.insert(kNearestVector.begin(), minXPVector.begin(), next(minXPVector.begin(), kNearest));
+
+    vec_sz size = kNearestVector.size();
+    vec_sz mid = size/2;
+
+    medianValue = kNearest % 2 == 0 ? (kNearestVector[mid] + kNearestVector[mid-1]) / 2 : kNearestVector[mid];
 }
 
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
@@ -243,8 +302,8 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     double dT = 0.1;        // time between two measurements in seconds
     double laneWidth = 4.0; // assumed width of the ego lane
     double scope = (laneWidth-0.2) / 2;
-    std::list<double> minXPrevList;
-    std::list<double> minXCurrList;
+    std::vector<double> minXPrevList;
+    std::vector<double> minXCurrList;
 
     auto checkFunc = [&scope](const LidarPoint &lp){return abs(lp.y) >= scope;};
 
@@ -256,27 +315,31 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     for (auto it = lidarPointsPrev.begin(); it != lidarPointsPrev.end(); ++it)
     {
         minXPrev = minXPrev > it->x ? it->x : minXPrev;
-        minXPrevList.push_front(minXPrev);
+        minXPrevList.push_back(minXPrev);
     }
 
     for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
     {
         minXCurr = minXCurr > it->x ? it->x : minXCurr;
-        minXCurrList.push_front(minXCurr);
+        minXCurrList.push_back(minXCurr);
     }
 
     int kNearestPoints = 100;
     double kMinXCurr = 0;
     double kMinXPrev = 0;
 
-    kNearestPointsMeanValue(minXPrevList, kNearestPoints, kMinXCurr);
-    kNearestPointsMeanValue(minXCurrList, kNearestPoints, kMinXPrev);   
+    // kNearestPointsMeanValue(minXPrevList, kNearestPoints, kMinXCurr);
+    // kNearestPointsMeanValue(minXCurrList, kNearestPoints, kMinXPrev);   
 
-    cout << "Mean min current:  " << kMinXCurr << endl;
-    cout << "Mean min previous: " << kMinXPrev << endl;
+    kNearestPointsMedianValue(minXCurrList, kNearestPoints, kMinXCurr);
+    kNearestPointsMedianValue(minXPrevList, kNearestPoints, kMinXPrev);
 
     // compute TTC from both measurements
     TTC = kMinXCurr * dT / (kMinXPrev - kMinXCurr);
+
+    cout << "Median min current:  " << kMinXCurr << endl;
+    cout << "Median min previous: " << kMinXPrev << endl;
+    cout << "Lidar TTC: " << TTC << "s" << endl;
 }
 
 

@@ -21,5 +21,6 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
                      std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC);   
 void kNearestPointsMeanValue(std::list<double> minXPList, int& kNearest, double& meanValue);
+void showLidarTopview(std::vector<LidarPoint> lidarPoints);
 
 #endif /* camFusion_hpp */
