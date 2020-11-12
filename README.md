@@ -327,9 +327,9 @@ Combinations Detector/Descriptor
 | 10.397 | 10.2699 | 0.127066 | 
 
 Median difference between Lidar and Camera TTC: 1.86565s \
-Processing time: 10.6572s 
+Processing time: 10.4263s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 7.98538
+KPI = 100 / ( Processing time + TTC difference ) = 8.13538
 
 
 ### 2. Combo **SHITOMASI/BRIEF**
@@ -356,9 +356,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 7.98538
 | 10.397 | 8.43097 | 1.96601 | 
 
 Median difference between Lidar and Camera TTC: 1.7863s \
-Processing time: 9.54365s 
+Processing time: 9.4687s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 8.82616
+KPI = 100 / ( Processing time + TTC difference ) = 8.88494
 
 
 ### 3. Combo **SHITOMASI/ORB**
@@ -385,9 +385,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 8.82616
 | 10.397 | 8.11259 | 2.28439 | 
 
 Median difference between Lidar and Camera TTC: 1.72677s \
-Processing time: 11.9411s 
+Processing time: 10.9314s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 7.31645
+KPI = 100 / ( Processing time + TTC difference ) = 7.90004
 
 
 ### 4. Combo **SHITOMASI/FREAK**
@@ -414,9 +414,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 7.31645
 | 10.397 | 10.6677 | 0.270681 | 
 
 Median difference between Lidar and Camera TTC: 1.75659s \
-Processing time: 12.5361s 
+Processing time: 11.8594s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.9966
+KPI = 100 / ( Processing time + TTC difference ) = 7.34431
 
 
 ### 5. Combo **SHITOMASI/AKAZE**
@@ -457,9 +457,9 @@ Assertion failed
 | 10.397 | 0.687055 | 9.70992 | 
 
 Median difference between Lidar and Camera TTC: 1.88323s \
-Processing time: 14.4474s 
+Processing time: 14.4662s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.12347
+KPI = 100 / ( Processing time + TTC difference ) = 6.11642
 
 
 ### 8. Combo **HARRIS/BRIEF**
@@ -486,9 +486,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.12347
 | 10.397 | 12.8381 | 2.44116 | 
 
 Median difference between Lidar and Camera TTC: 2.12009s \
-Processing time: 11.2938s 
+Processing time: 11.3883s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 7.45495
+KPI = 100 / ( Processing time + TTC difference ) = 7.40283
 
 
 ### 9. Combo **HARRIS/ORB**
@@ -515,9 +515,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 7.45495
 | 10.397 | -inf | inf | 
 
 Median difference between Lidar and Camera TTC: 2.28474s \
-Processing time: 11.6966s 
+Processing time: 11.544s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 7.1524
+KPI = 100 / ( Processing time + TTC difference ) = 7.23132
 
 
 ### 10. Combo **HARRIS/FREAK**
@@ -544,9 +544,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 7.1524
 | 10.397 | 25.6763 | 15.2793 | 
 
 Median difference between Lidar and Camera TTC: 2.29118s \
-Processing time: 12.2818s 
+Processing time: 11.7394s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.862
+KPI = 100 / ( Processing time + TTC difference ) = 7.12731
 
 
 ### 11. Combo **HARRIS/AKAZE**
@@ -587,9 +587,9 @@ Assertion failed
 | 10.397 | 11.7502 | 1.35325 | 
 
 Median difference between Lidar and Camera TTC: 2.31427s \
-Processing time: 15.8369s 
+Processing time: 15.0954s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 5.50929
+KPI = 100 / ( Processing time + TTC difference ) = 5.74393
 
 
 ### 14. Combo **FAST/BRIEF**
@@ -616,9 +616,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 5.50929
 | 10.397 | 11.554 | 1.15701 | 
 
 Median difference between Lidar and Camera TTC: 2.38228s \
-Processing time: 12.1096s 
+Processing time: 11.8299s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.90044
+KPI = 100 / ( Processing time + TTC difference ) = 7.03621
 
 
 ### 15. Combo **FAST/ORB**
@@ -645,9 +645,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.90044
 | 10.397 | 10.5903 | 0.193281 | 
 
 Median difference between Lidar and Camera TTC: 2.38228s \
-Processing time: 12.1323s 
+Processing time: 12.3014s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.88962
+KPI = 100 / ( Processing time + TTC difference ) = 6.8103
 
 
 ### 16. Combo **FAST/FREAK**
@@ -674,9 +674,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.88962
 | 10.397 | 11.5066 | 1.10958 | 
 
 Median difference between Lidar and Camera TTC: 2.31427s \
-Processing time: 12.7243s 
+Processing time: 12.8872s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.64955
+KPI = 100 / ( Processing time + TTC difference ) = 6.57833
 
 
 ### 17. Combo **FAST/AKAZE**
@@ -717,9 +717,9 @@ Assertion failed
 | 10.397 | 10.5758 | 0.178837 | 
 
 Median difference between Lidar and Camera TTC: 2.3113s \
-Processing time: 20.6766s 
+Processing time: 20.9528s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 4.35012
+KPI = 100 / ( Processing time + TTC difference ) = 4.29848
 
 
 ### 20. Combo **BRISK/BRIEF**
@@ -746,9 +746,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 4.35012
 | 10.397 | 9.60206 | 0.794908 | 
 
 Median difference between Lidar and Camera TTC: 2.35735s \
-Processing time: 16.8683s 
+Processing time: 17.0978s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 5.20138
+KPI = 100 / ( Processing time + TTC difference ) = 5.14004
 
 
 ### 21. Combo **BRISK/ORB**
@@ -775,9 +775,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 5.20138
 | 10.397 | 10.3842 | 0.0128146 | 
 
 Median difference between Lidar and Camera TTC: 2.3932s \
-Processing time: 16.8866s 
+Processing time: 17.1109s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 5.18677
+KPI = 100 / ( Processing time + TTC difference ) = 5.12712
 
 
 ### 22. Combo **BRISK/FREAK**
@@ -804,9 +804,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 5.18677
 | 10.397 | 10.6095 | 0.212509 | 
 
 Median difference between Lidar and Camera TTC: 2.41812s \
-Processing time: 17.1602s 
+Processing time: 17.361s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 5.10769
+KPI = 100 / ( Processing time + TTC difference ) = 5.05584
 
 
 ### 23. Combo **BRISK/AKAZE**
@@ -847,9 +847,9 @@ Assertion failed
 | 10.397 | 20.1038 | 9.70687 | 
 
 Median difference between Lidar and Camera TTC: 2.46568s \
-Processing time: 15.6301s 
+Processing time: 15.5438s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 5.52614
+KPI = 100 / ( Processing time + TTC difference ) = 5.55264
 
 
 ### 26. Combo **ORB/BRIEF**
@@ -876,9 +876,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 5.52614
 | 10.397 | 13.275 | 2.87799 | 
 
 Median difference between Lidar and Camera TTC: 2.59687s \
-Processing time: 11.5469s 
+Processing time: 11.8627s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 7.07025
+KPI = 100 / ( Processing time + TTC difference ) = 6.91582
 
 
 ### 27. Combo **ORB/ORB**
@@ -905,9 +905,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 7.07025
 | 10.397 | 21.8102 | 11.4132 | 
 
 Median difference between Lidar and Camera TTC: 2.63777s \
-Processing time: 12.1614s 
+Processing time: 12.006s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.75713
+KPI = 100 / ( Processing time + TTC difference ) = 6.82884
 
 
 ### 28. Combo **ORB/FREAK**
@@ -934,9 +934,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.75713
 | 10.397 | 24.1855 | 13.7885 | 
 
 Median difference between Lidar and Camera TTC: 2.71157s \
-Processing time: 12.5627s 
+Processing time: 11.8024s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.54695
+KPI = 100 / ( Processing time + TTC difference ) = 6.88993
 
 
 ### 29. Combo **ORB/AKAZE**
@@ -1001,9 +1001,9 @@ Assertion failed
 | 10.397 | 9.00572 | 1.39125 | 
 
 Median difference between Lidar and Camera TTC: 2.6121s \
-Processing time: 13.7903s 
+Processing time: 13.0777s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.09667
+KPI = 100 / ( Processing time + TTC difference ) = 6.37356
 
 
 ### 36. Combo **AKAZE/SIFT**
@@ -1036,9 +1036,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.09667
 | 10.397 | 9.31625 | 1.08073 | 
 
 Median difference between Lidar and Camera TTC: 2.55884s \
-Processing time: 17.455s 
+Processing time: 16.4775s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 4.99654
+KPI = 100 / ( Processing time + TTC difference ) = 5.25311
 
 
 ### 38. Combo **SIFT/BRIEF**
@@ -1065,9 +1065,9 @@ KPI = 100 / ( Processing time + TTC difference ) = 4.99654
 | 10.397 | 9.41223 | 0.984744 | 
 
 Median difference between Lidar and Camera TTC: 2.47804s \
-Processing time: 13.631s 
+Processing time: 13.2759s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.20769
+KPI = 100 / ( Processing time + TTC difference ) = 6.34762
 
 
 ### 39. Combo **SIFT/ORB**
@@ -1102,9 +1102,9 @@ OutOfMemoryError
 | 10.397 | 9.02737 | 1.3696 | 
 
 Median difference between Lidar and Camera TTC: 2.46568s \
-Processing time: 14.1939s 
+Processing time: 13.7884s 
 
-KPI = 100 / ( Processing time + TTC difference ) = 6.00257
+KPI = 100 / ( Processing time + TTC difference ) = 6.15231
 
 
 ### 41. Combo **SIFT/AKAZE**
@@ -1122,4 +1122,31 @@ KPI = 100 / ( Processing time + TTC difference ) = 6.00257
 Assertion failed
 
 
-----------------End of Processing---------------------
+-----------------------------------------------------------------------------
+
+| | Detector | Descriptor | TTC Difference (s) | Performance (s) |     KPI     |
+| ----------- | ----------- | ----------- | ----------- |----------- |----------- |
+| 1. | SHITOMASI | BRIEF | 1.7863 | 9.4687 | 8.88494 | 
+| 2. | SHITOMASI | BRISK | 1.86565 | 10.4263 | 8.13538 | 
+| 3. | SHITOMASI | ORB | 1.72677 | 10.9314 | 7.90004 | 
+| 4. | HARRIS | BRIEF | 2.12009 | 11.3883 | 7.40283 | 
+| 5. | SHITOMASI | FREAK | 1.75659 | 11.8594 | 7.34431 | 
+| 6. | HARRIS | ORB | 2.28474 | 11.544 | 7.23132 | 
+| 7. | HARRIS | FREAK | 2.29118 | 11.7394 | 7.12731 | 
+| 8. | FAST | BRIEF | 2.38228 | 11.8299 | 7.03621 | 
+| 9. | ORB | BRIEF | 2.59687 | 11.8627 | 6.91582 | 
+| 10. | ORB | FREAK | 2.71157 | 11.8024 | 6.88993 | 
+| 11. | ORB | ORB | 2.63777 | 12.006 | 6.82884 | 
+| 12. | FAST | ORB | 2.38228 | 12.3014 | 6.8103 | 
+| 13. | FAST | FREAK | 2.31427 | 12.8872 | 6.57833 | 
+| 14. | AKAZE | AKAZE | 2.6121 | 13.0777 | 6.37356 | 
+| 15. | SIFT | BRIEF | 2.47804 | 13.2759 | 6.34762 | 
+| 16. | SIFT | FREAK | 2.46568 | 13.7884 | 6.15231 | 
+| 17. | HARRIS | BRISK | 1.88323 | 14.4662 | 6.11642 | 
+| 18. | FAST | BRISK | 2.31427 | 15.0954 | 5.74393 | 
+| 19. | ORB | BRISK | 2.46568 | 15.5438 | 5.55264 | 
+| 20. | SIFT | BRISK | 2.55884 | 16.4775 | 5.25311 | 
+| 21. | BRISK | BRIEF | 2.35735 | 17.0978 | 5.14004 | 
+| 22. | BRISK | ORB | 2.3932 | 17.1109 | 5.12712 | 
+| 23. | BRISK | FREAK | 2.41812 | 17.361 | 5.05584 | 
+| 24. | BRISK | BRISK | 2.3113 | 20.9528 | 4.29848 | 

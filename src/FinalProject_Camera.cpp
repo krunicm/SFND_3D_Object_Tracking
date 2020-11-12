@@ -22,6 +22,17 @@
 
 using namespace std;
 
+struct Measurment
+{
+    string detector, descriptor;
+    double ttcDiff, performans, kpi;
+    
+    bool operator<(const Measurment& a)
+    {
+        return a.kpi < (*this).kpi;
+    }
+};
+
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
@@ -80,6 +91,7 @@ int main(int argc, const char *argv[])
 
     /* MAIN LOOP OVER ALL IMAGES */
     std::vector<double> diff;
+    std::vector<Measurment> measurments;
 
     list<string> detectorsList {"SHITOMASI", "HARRIS", "FAST", "BRISK", "ORB", "AKAZE", "SIFT"};
     list<string> descriptorsList {"BRISK", "BRIEF", "ORB", "FREAK", "AKAZE", "SIFT"}; // 
@@ -366,14 +378,31 @@ int main(int argc, const char *argv[])
             double median = 0;
 
             kNearestPointsMedianValue(diff, diff.size(), median);
+            double kpi = 100/(t + median);
 
             cout << "\nMedian difference between Lidar and Camera TTC: " << median << "s \\" << endl;
             cout << "Processing time: " << t << "s \n" << endl;
-            cout << "KPI = 100 / ( Processing time + TTC difference ) = " << 100/(t + median) << "\n"<< endl;
+            cout << "KPI = 100 / ( Processing time + TTC difference ) = " << kpi << "\n"<< endl;
+
+            Measurment measurment = {detectorType, descriptorType, median, t, kpi};
+            measurments.push_back(measurment);
         }
     }
+    
+    std::sort(measurments.begin(), measurments.end());
 
-    cout << "\n\n----------------End of Processing---------------------\n\n!!!" << endl;
+    cout << "\n\n-----------------------------------------------------------------------------\n\n";
+    cout << "| | Detector | Descriptor | TTC Difference (s) | Performance (s) |     KPI     |" << endl;
+    cout << "| ----------- | ----------- | ----------- | ----------- |----------- |----------- |" << endl;
+
+    int top = 0;
+    for (Measurment measurment : measurments)
+    {
+        top++;
+        cout << "| " << top << ". | " << measurment.detector << " | " << measurment.descriptor << " | " << measurment.ttcDiff << " | " << measurment.performans << " | " << measurment.kpi << " | " << endl;
+    }
+
+    cout << "/n/n";
 
     return 0;
 }
