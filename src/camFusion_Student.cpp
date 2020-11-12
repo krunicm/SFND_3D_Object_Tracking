@@ -222,9 +222,9 @@ void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint
         }
     }
 
-    cout << "Mean value: " << euclidianMean << endl;
-    cout << "Before filtering there are: " << euclidian.size() << endl;
-    cout << "After filtering, there are: " << boundingBox.keypoints.size() << endl;
+    // cout << "Mean value: " << euclidianMean << endl;
+    // cout << "Before filtering there are: " << euclidian.size() << endl;
+    // cout << "After filtering, there are: " << boundingBox.keypoints.size() << endl;
 }
 
 
@@ -302,37 +302,26 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     double dT = 0.1;        // time between two measurements in seconds
     double laneWidth = 4.0; // assumed width of the ego lane
     double scope = (laneWidth-0.2) / 2;
-    std::vector<double> minXPrevList;
-    std::vector<double> minXCurrList;
+    std::vector<double> prevPoints;
+    std::vector<double> currPoints;
 
     auto checkFunc = [&scope](const LidarPoint &lp){return abs(lp.y) >= scope;};
 
     lidarPointsPrev.erase(std::remove_if(lidarPointsPrev.begin(), lidarPointsPrev.end(), checkFunc), lidarPointsPrev.end());
     lidarPointsCurr.erase(std::remove_if(lidarPointsCurr.begin(), lidarPointsCurr.end(), checkFunc), lidarPointsCurr.end());
 
-    // find closest distance to Lidar points within ego lane
-    double minXPrev = 1e9, minXCurr = 1e9;
-    for (auto it = lidarPointsPrev.begin(); it != lidarPointsPrev.end(); ++it)
-    {
-        minXPrev = minXPrev > it->x ? it->x : minXPrev;
-        minXPrevList.push_back(minXPrev);
-    }
+    for (auto prevPoint : lidarPointsPrev)
+        prevPoints.push_back(prevPoint.x);
 
-    for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
-    {
-        minXCurr = minXCurr > it->x ? it->x : minXCurr;
-        minXCurrList.push_back(minXCurr);
-    }
+    for (auto currPoint : lidarPointsCurr)
+        currPoints.push_back(currPoint.x);
 
     int kNearestPoints = 100;
     double kMinXCurr = 0;
     double kMinXPrev = 0;
 
-    // kNearestPointsMeanValue(minXPrevList, kNearestPoints, kMinXCurr);
-    // kNearestPointsMeanValue(minXCurrList, kNearestPoints, kMinXPrev);   
-
-    kNearestPointsMedianValue(minXCurrList, kNearestPoints, kMinXCurr);
-    kNearestPointsMedianValue(minXPrevList, kNearestPoints, kMinXPrev);
+    kNearestPointsMedianValue(currPoints, kNearestPoints, kMinXCurr);
+    kNearestPointsMedianValue(prevPoints, kNearestPoints, kMinXPrev);
 
     // compute TTC from both measurements
     TTC = kMinXCurr * dT / (kMinXPrev - kMinXCurr);
